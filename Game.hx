@@ -1,6 +1,7 @@
 //haxe -lib hscript -lib hlsdl -D -O2 -hl ..\out\build.c -main Game -D hlgen.makefile=vs2022 && ..\out\x64\Release\build.exe
 //haxe -lib hscript -lib hlsdl -D -O2 -hl ..\out\build.c -main Game -D hlgen.makefile=vs2022 -D analyzer-optimize -D analyzer-user-var-fusion -D analyzer-fusion -D hl-optimize -D hlcunsafe -D release && ..\out\x64\Release\build.exe
 //haxe -lib format -lib hlopenal -lib hscript -lib hlsdl -D -O3 -D analyzer-optimize -D analyzer-fusion -hl ..\out\build.c -main Game -D hlgen.makefile=vs2022 && ..\out\x64\Release\build.exe
+
 import Eight;
 import Character.MoveJob;
 import sdl.Event;
@@ -48,28 +49,38 @@ class Game extends Eight {
     var line:Line; var lineAngular:Line;
     public static var planets:Array<Planet> = [];
 
+    var mainCharacter:ExtendableObject;
+
+    //public var mainCharacter:objects.ExtendableObject;
     public function new() {         
         super();
+        
         //Worker.run();
-        bg = new Eight.Object(Engine.n*2, Engine.n2*2, null, 0xFF131413);
+        bg = new Eight.Object(Engine.n*2, Engine.n2*2, null, 0xFF000000);
         bg.isUI = true;
-
+         
         mouseMoveLine = new Line(new Vec3(0, 0, 0), new Vec3(0, 0, 0));
         mouseMoveLine.setVisible(false);
 
+        mainCharacter = new TwoLegCharacter();
+        mainCharacter.setPos(250, 250);
+        
+        
+        /*
         currentShip2.template = 'data/station1.json';
         SaveManager.load(currentShip2);
         currentShip2.core.pos = new Vec3(600, 250, 0);
-
+        
         var station = new Station();
         station.manager = new ExtendableManager();
         station.manager.template = 'data/station1.json';
         SaveManager.load(station.manager);
         station.manager.core.pos = new Vec3(1600, 1600, 0);
         stations.push(station);
-
+        
+       
         //planets.push(new Planet(1000, 1000, 150, 5000000));
-
+        
         minimap = new MiniMap([Engine.n-210, Engine.n2-210, 0], 200, 200, 0.05);
 
         currentShip.template = 'data/ship1.json';
@@ -91,7 +102,7 @@ class Game extends Eight {
             obj.isBroken = true;
             obj.health = 0.2 + Math.random() * 0.5;
         }
-
+        
         new Hydroponics().setPos(60, 500);
         new Vendor().setPos(100, 500);
         new Storage().setPos(140, 500);
@@ -109,7 +120,6 @@ class Game extends Eight {
         new ShipEngine().setPos(620, 500);
         new Mainframe().setPos(660, 500);
         new ShipAutopilot().setPos(700, 500);
-
         characters.push(new Character(300, 300));
 
         ui = new UI();
@@ -128,24 +138,26 @@ class Game extends Eight {
         var interp = new hscript.Interp();
         trace(interp.execute(ast));
 
-        SoundManager.init();
+        SoundManager.init(); */
     }
 
     
     public var showMinimap:Bool = true;
     public override function update(dt:Float) {
+        bg.setPos(Engine.n/2, Engine.n2/2);
+        /*
         try {
             bg.setPos(Engine.n/2, Engine.n2/2);
             if(paused) dt *= 0.05;
 
-            /* for (planet in planets) {
+            for (planet in planets) {
                 var diff = planet.pos.sub(currentShip.core.pos);
                 var dist = diff.length();
                 if (dist > 1) {
                     var force = diff.normalize().multiply(planet.mass / (dist * dist));
                     currentShip.core.velocity = currentShip.core.velocity.add(force.multiply(dt));
                 }
-            } */
+            } 
 
             Engine.cameraOffset = new Vec3(currentShip.core.pos[0] - Engine.n/2, currentShip.core.pos[1] - Engine.n2/2, 0);
 
@@ -194,6 +206,7 @@ class Game extends Eight {
             trace('Error!!!');
             throw error;
         }
+        */
     }
 
     public function debugConnectors() {
@@ -301,22 +314,26 @@ class Game extends Eight {
             }
 
             if (event.keyCode == 119) { //w
-                ShipConsole.isWPressed = true;
+                //ShipConsole.isWPressed = true;
+                mainCharacter.pos[1] += 3;
             }
             if (event.keyCode == 115) { //s
-                ShipConsole.isSPressed = true;
+                //ShipConsole.isSPressed = true;
+                mainCharacter.pos[1] -= 3;
             }
             if (event.keyCode == 113) { //q
-                ShipConsole.isQPressed = true;
+                //ShipConsole.isQPressed = true;
             }
             if (event.keyCode == 101) { //e
-                ShipConsole.isEPressed = true;
+                //ShipConsole.isEPressed = true;
             }
             if (event.keyCode == 97) { //A
-                ShipConsole.isAPressed = true;
+                //ShipConsole.isAPressed = true;
+                mainCharacter.pos[0] -= 3;
             }
             if (event.keyCode == 100) { //D
-                ShipConsole.isDPressed = true;
+                //ShipConsole.isDPressed = true;
+                mainCharacter.pos[0] += 3;
             }
 
             if (event.keyCode == 109) { //m
@@ -555,25 +572,6 @@ class Game extends Eight {
         }
 
         return null;
-    }
-
-    public function makeShip() {
-        var core = new ShipCore();
-        currentShip.objects.push(core);
-        currentShip.core = core;
-        core.setPos(250, 250);
-
-        //var panel = new SolarPanel();
-        //currentShip.connect(core, panel, core.connectors[1], panel.connectors[0]);
-
-        /* core.extendUp(Hull).extendUp(Hull).putAbove(ShipConsole);
-        var t = core.extendLeft(Hull);
-        t.extendUp(Hull).extendUp(Hull);
-        t.extendLeft(Radiator).extendLeft(Radiator);
-        core.extendDown(Hull).extendDown(Hull).extendDown(ShipEngine);
-
-        var ltank = core.putAbove(LiquidTank);
-        ltank.extendDown(Pipe); */
     }
 
     public static function main() {

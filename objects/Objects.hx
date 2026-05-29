@@ -25,8 +25,16 @@ typedef StorageDetail = {
     var color:Int;
 }
 
+
+
 class GameObject extends Object {
 
+}
+
+class TwoLegCharacter extends ExtendableObject {
+    public function new() {
+        super(80, 80, 'character2.png');
+    }
 }
 
 class ItemVisuals {
