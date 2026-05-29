@@ -152,6 +152,8 @@ class Character extends GameObject {
     private var targetX:Float;
     private var targetY:Float;
 
+    var bobTime:Float = 0;
+
     public var o2:Float = 1;
     public var food:Float = 1;
     public var sleep:Float = 1;
@@ -184,9 +186,11 @@ class Character extends GameObject {
         var dx = targetX - x;
         var dy = targetY - y;
         var dist = Math.sqrt(dx * dx + dy * dy);
+        var isMoving = false;
         if (dist > speed * dt) {
             x += dx / dist * speed * dt;
             y += dy / dist * speed * dt;
+            isMoving = true;
         } else {
             if (isInside && currentObj != null) {
                 targetX = currentObj.pos[0];
@@ -194,6 +198,14 @@ class Character extends GameObject {
             }
             x = targetX;
             y = targetY;
+        }
+
+        if (isMoving) {
+            bobTime += dt * 15;
+            localAngle = Math.sin(bobTime) * 0.15;
+        } else {
+            bobTime = 0;
+            localAngle = 0;
         }
 
         setPos(x, y);

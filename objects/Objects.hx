@@ -32,8 +32,24 @@ class GameObject extends Object {
 }
 
 class TwoLegCharacter extends ExtendableObject {
+    var bobTime:Float = 0;
+    var lastPos:Vec3 = new Vec3(0, 0, 0);
+
     public function new() {
         super(80, 80, 'character2.png');
+    }
+
+    public override function update(dt:Float) {
+        var isMoving = Eight.distance(pos, lastPos) > 0.01;
+        if (isMoving) {
+            bobTime += dt * 15; // Bobbing speed
+            localAngle = Math.sin(bobTime) * 0.1; // Bobbing amplitude (approx 5.7 degrees)
+        } else {
+            bobTime = 0;
+            localAngle = 0;
+        }
+        lastPos = [pos.x, pos.y, pos.z];
+        super.update(dt);
     }
 }
 
