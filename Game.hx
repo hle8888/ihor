@@ -64,6 +64,9 @@ class Game extends Eight {
 
         mainCharacter = new TwoLegCharacter();
         mainCharacter.setPos(250, 250);
+
+        var box = new Box();
+        box.setPos(100, 100);
         
 
         ui = new UI();

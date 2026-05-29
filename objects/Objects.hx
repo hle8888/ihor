@@ -53,6 +53,12 @@ class TwoLegCharacter extends ExtendableObject {
     }
 }
 
+class Box extends ExtendableObject {
+    public function new() {
+        super(100, 20, 'box.png');
+    }
+}
+
 class ItemVisuals {
     public static function getTexturePath(itemName:String):String {
         return switch (itemName) {
