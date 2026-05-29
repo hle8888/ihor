@@ -65,6 +65,10 @@ class Game extends Eight {
         mainCharacter = new TwoLegCharacter();
         mainCharacter.setPos(250, 250);
         
+
+        ui = new UI();
+        mainMenu = new MainMenu();    
+        //SoundManager.init();
         
         /*
         currentShip2.template = 'data/station1.json';
@@ -122,8 +126,7 @@ class Game extends Eight {
         new ShipAutopilot().setPos(700, 500);
         characters.push(new Character(300, 300));
 
-        ui = new UI();
-        mainMenu = new MainMenu();       
+           
         contextMenu = new ContextMenu();
         //generateRooms();
 
@@ -138,7 +141,7 @@ class Game extends Eight {
         var interp = new hscript.Interp();
         trace(interp.execute(ast));
 
-        SoundManager.init(); */
+         */
     }
 
     
@@ -249,12 +252,12 @@ class Game extends Eight {
                 isLeftMouseDown = true;
                 logicLinkDeletedOnHold = false;
             }
-            mouseMoveLine.setVisible(true);
+            //mouseMoveLine.setVisible(true);
             mouseMoveLine.pos1 = worldPos;
         }
-        if (event.type == EventType.MouseMove && mouseMoveLine.show) {
+        /* if (event.type == EventType.MouseMove && mouseMoveLine.show) {
             mouseMoveLine.pos2 = worldPos;
-        }
+        } */
         if (event.type == EventType.MouseUp) {
             if (event.button == 1) {
                 isLeftMouseDown = false;
